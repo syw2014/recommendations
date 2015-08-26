@@ -1,0 +1,47 @@
+K 25
+svn:wc:ra_dav:version-url
+V 76
+/search/!svn/ver/1443/code/public/third_part/jsoncpp/0.5.0/jsoncpp-src-0.5.0
+END
+LICENSE
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/search/!svn/ver/1443/code/public/third_part/jsoncpp/0.5.0/jsoncpp-src-0.5.0/LICENSE
+END
+AUTHORS
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/search/!svn/ver/1443/code/public/third_part/jsoncpp/0.5.0/jsoncpp-src-0.5.0/AUTHORS
+END
+makerelease.py
+K 25
+svn:wc:ra_dav:version-url
+V 91
+/search/!svn/ver/1443/code/public/third_part/jsoncpp/0.5.0/jsoncpp-src-0.5.0/makerelease.py
+END
+version
+K 25
+svn:wc:ra_dav:version-url
+V 84
+/search/!svn/ver/1443/code/public/third_part/jsoncpp/0.5.0/jsoncpp-src-0.5.0/version
+END
+SConstruct
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/search/!svn/ver/1443/code/public/third_part/jsoncpp/0.5.0/jsoncpp-src-0.5.0/SConstruct
+END
+doxybuild.py
+K 25
+svn:wc:ra_dav:version-url
+V 89
+/search/!svn/ver/1443/code/public/third_part/jsoncpp/0.5.0/jsoncpp-src-0.5.0/doxybuild.py
+END
+README.txt
+K 25
+svn:wc:ra_dav:version-url
+V 87
+/search/!svn/ver/1443/code/public/third_part/jsoncpp/0.5.0/jsoncpp-src-0.5.0/README.txt
+END
