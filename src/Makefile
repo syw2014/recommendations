@@ -14,16 +14,16 @@ CFLAGS = -W -Wall -I../.. -pthread -g -O2 -DMONGOOSE_ENABLE_THREADS $(CFLAGS_EXT
 SOURCES = $(PROG).cc mongoose.c indexEngine.cpp recommendEngine.cpp $(PUB_DIR)/ilplib/source/knlp/normalize.cpp 
 
 CC=g++
+all: $(PROG) output
 
 LDFLAGS=-lboost_system -lglog -ljson -lboost_filesystem
-$(PROG): $(SOURCES)
+$(PROG): $(SOURCES) 
 	$(CC) -o $(PROG) $(SOURCES) $(CFLAGS) $(LDFLAGS) -I $(SRC_INC) -I $(ILP_LIB) -I $(IZENE_LIB) -I $(JSON_INC) -L $(JSON_LIB)
 
-all: $(PROG) output
 
 output: $(PROG)
 	@echo; echo "Copy executable file(s)..."
-	@cp -v $(PROG) ../bin
+	@mv -v $(PROG) ../bin
 
 clean:
-	rm -rf $(PROG) *.exe *.dSYM *.obj *.exp .*o *.lib
+	rm -rf ../bin/$(PROG) *.exe *.dSYM *.obj *.exp .*o *.lib

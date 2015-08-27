@@ -176,7 +176,6 @@ bool indexEngine::open()
 	if(0 == terms2qIDs_.size() || 0 == queryIdata_.size())
 	{
 		isNeedflush = true;
-	//	std::cout << "new file\n";
 		return true;
 	}
 	else 

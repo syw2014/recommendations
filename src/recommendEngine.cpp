@@ -59,8 +59,11 @@ recommendEngine::~recommendEngine()
 	}
 }
 
-void recommendEngine::getCandicate(const std::string& userQuery,Terms2QidMap& terms2qIDs,
-                    QueryIdataMap& queryIdata,QueryCateMap& query2Cate,String2IntMap& termsIdMap)
+void recommendEngine::getCandicate(const std::string& userQuery
+					,Terms2QidMap& terms2qIDs
+					,QueryIdataMap& queryIdata
+					,QueryCateMap& query2Cate
+					,String2IntMap& termsIdMap)
 {
 	//buildEngine();
 	if(0 == userQuery.length())
@@ -92,10 +95,8 @@ void recommendEngine::recommendNoResults(Terms2QidMap& terms2qIDs,
 	Terms2QidMapIter termsIdIter;
 
 	bool subset = false;
-	bool Not_subset = false;
 	float bigScore1 = 0.0;
 	float bigScore2 = 0.0;
-    float queryScore = 0.0;
 
     std::size_t cnt = 0;
 
@@ -157,7 +158,8 @@ void recommendEngine::recommendNoResults(Terms2QidMap& terms2qIDs,
             {
 			caculateNM(termsID,qTermsID,cnt);
             float simScore = (float) cnt / (qTermsID.size() + 0.1);
-            float wScore = (float)log(queryIdata[termsIdIter->second[i]].hits + 2.0) / (qTermsID.size() + 0.1);
+            float wScore = (float)log(queryIdata[termsIdIter->second[i]].hits 
+					+ 2.0) / (qTermsID.size() + 0.1);
             dt.score = (float) wScore * simScore;
             sortByScore(queryScoreVector,dt);
             }
@@ -187,8 +189,8 @@ void recommendEngine::recommendNoResults(Terms2QidMap& terms2qIDs,
 	jsonResult["NoResult_Recommend"] = ss;
 
 	//get TopK
-	int Topk = 9;
-	int upperbound;
+	std::size_t Topk = 9;
+	std::size_t upperbound;
 	if(inputQuery.size() > 31)
 		queryScoreVector = vec;
 
@@ -216,7 +218,8 @@ void recommendEngine::recommendCorrection()
 
 //related query recommendation
 void recommendEngine::recommend(Terms2QidMap& terms2qIDs,QueryIdataMap& queryIdata
-            ,QueryCateMap& query2Cate,Json::Value& jsonResult
+            ,QueryCateMap& query2Cate
+			,Json::Value& jsonResult
 			,String2IntMap& termsIdMap
             ,std::string inputQuery,const std::size_t TopK)
 {
@@ -472,7 +475,10 @@ void sortByScore(vector<DATA_TYPE>& queryScoreMap,DATA_TYPE& dt,const std::size_
         if(dt.score > queryScoreMap.back().score)
         {
         	//std::cout << "test1---->" << dt.txt <<"\tscore:" << dt.score ;
-        	queryScoreMap.pop_back();
+        	for(std::size_t i = 0; i < queryScoreMap.size(); ++i)
+				if(dt.txt == queryScoreMap[i].txt)
+					return;
+			queryScoreMap.pop_back();
         	queryScoreMap.push_back(dt);
 
         }
