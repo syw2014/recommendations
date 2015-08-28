@@ -128,6 +128,23 @@ bool indexEngine::open()
 	}
 //	std::cout << "读入query id 的大小:" << queryIdata_.size() << std::endl;
 	finQueryDat.close();
+	
+	//load forbid keywords list
+	ifstream finForbid;
+	std::string forbid_pth = dict_pth_ + "/forbidden.v";
+	finForbid.open(forbid_pth.c_str());
+	if(finForbid.is_open())
+	{
+		sLine = "";
+		forbidList_.clear();
+		while(getline(finForbid,sLine))
+		{
+			if(0 == sLine.size())
+				continue;
+			forbidList_.insert(sLine);
+		}
+	}
+	finForbid.close();
 
 	//load category dictonary
 	ifstream finQuery2Cate;
@@ -391,6 +408,20 @@ void indexEngine::indexing(const std::string& corpus_pth)
 	}
 	ifOrigin_data.close();//file stream close
 	//ofQueryDat.close();
+}
+
+bool indexEngine::isForbidden(const std::string& userQuery)
+{
+	if(userQuery.size() == 0)
+		return false;
+	std::set<std::string>::iterator it;
+	for(it = forbidList_.begin(); it != forbidList_.end(); ++it)
+	{
+		if(std::string::npos != userQuery.find(*it))
+			return true;
+	}
+
+	return false;
 }
 
 void indexEngine::flush()

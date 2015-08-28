@@ -66,8 +66,8 @@ void recommendEngine::getCandicate(const std::string& userQuery
 					,String2IntMap& termsIdMap)
 {
 	//buildEngine();
-	if(0 == userQuery.length())
-		return;
+//	if(0 == userQuery.length())
+//		return;
    termsIdMap = indexer_->search(userQuery,terms2qIDs,queryIdata,query2Cate);
 }
 
@@ -78,8 +78,8 @@ void recommendEngine::recommendNoResults(Terms2QidMap& terms2qIDs,
         ,String2IntMap& termsIdMap,std::string inputQuery)
 {
 	//no candicate or no terms
-	if(0 == terms2qIDs.size() || 0 == queryIdata.size() || 0 == termsIdMap.size())
-		return;
+//	if(0 == terms2qIDs.size() || 0 == queryIdata.size() || 0 == termsIdMap.size())
+//		return;
 	vector<std::size_t> qTermsID;
 	vector<std::size_t> termsID;
 	String2IntMapIter termsIter;
@@ -183,8 +183,8 @@ void recommendEngine::recommendNoResults(Terms2QidMap& terms2qIDs,
 	//check the suggestion
 	if(ss.length() <= 3 && b_score !=0)
 		ss = big_term;
-	if(inputQuery == ss)
-		ss = "";
+	if(inputQuery == ss || ss == "")
+		ss = "null";
     
 	jsonResult["NoResult_Recommend"] = ss;
 
@@ -224,8 +224,8 @@ void recommendEngine::recommend(Terms2QidMap& terms2qIDs,QueryIdataMap& queryIda
             ,std::string inputQuery,const std::size_t TopK)
 {
 	//check
-	if(0 == terms2qIDs.size() || 0 == queryIdata.size() || 0 == termsIdMap.size())
-		return;
+	//if(0 == terms2qIDs.size() || 0 == queryIdata.size() || 0 == termsIdMap.size())
+	//	return;
 
 	vector<std::size_t> qTermsID;
 	vector<std::size_t> termsID;
@@ -316,11 +316,23 @@ bool recommendEngine::isNeedBuild()
 void recommendEngine::jsonResults(const std::string& userQuery,std::string& res)
 {
     Json::Value jsonResult;
+	Json::Value catJson;
+	Json::Value category;
+
     Terms2QidMap terms2qIDs;
     QueryIdataMap queryIdata;
     QueryCateMap query2Cate;
     String2IntMap termsIdMap;
-    
+    if(indexer_->isForbidden(userQuery))
+	{
+		jsonResult["Forbidden"] = "true";
+		jsonResult["NoResult_Recommend"] = "null";
+		jsonResult["category"] = category;
+		jsonResult["recommendation"] = catJson;
+	}
+	else
+	{
+		jsonResult["Forbidden"] = "false";
     //caculate cost time
     boost::posix_time::ptime time_start,time_end;
     boost::posix_time::millisec_posix_time_system_config::time_duration_type time_elapse;
@@ -366,6 +378,7 @@ void recommendEngine::jsonResults(const std::string& userQuery,std::string& res)
     }
 	
     jsonResult["category"] = category;
+	}
 	res = jsonResult.toStyledString();
 }
 

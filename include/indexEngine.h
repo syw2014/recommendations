@@ -66,17 +66,20 @@ class indexEngine
 				Terms2QidMap& candicateQids
 				,QueryIdataMap& candicateQuery,
 				QueryCateMap& candicateCate);//search query
+
 		void indexing(const std::string& corpus_pth);
 		void tokenTerms(const std::string&, String2IntMap&);
 		void flush();
 		bool open(); //open disk file
 		bool isUpdate();
+		bool isForbidden(const std::string& userQuery);
 
 
 	private:
 		Terms2QidMap terms2qIDs_; //terms id ,and it's query id vector
 		QueryIdataMap queryIdata_; //query id ,query data
-        QueryCateMap query2Cate_;
+        QueryCateMap query2Cate_;   //query --> category
+		std::set<std::string> forbidList_; // forbid keywords list
 
 		std::string dir_; //tokenize dictionary path
 		std::string dict_pth_;
