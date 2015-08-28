@@ -10,14 +10,10 @@
 #include <vector>
 #include <sys/types.h>
 #include <boost/program_options.hpp>
-#include <boost/filesystem.hpp>
 #include <boost/format.hpp>
-#include <boost/algorithm/string.hpp>
-#include <boost/date_time/posix_time/posix_time.hpp>
 #include <signal.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <glog/logging.h>
 #include "mongoose.h"
 #include "recommendEngine.h"
 
@@ -25,38 +21,6 @@ static std::string tpth = "/work/mproj/workproj/github/token-dict/dict";
 static std::string dpth = "/work/mproj/workproj/github/token-dict/";
 //recommendengie
 recommendEngine gRecomm("../../token-dict/dict","../../token-dict/");
-
-
-void initGlog(const char* cProgram,const char* logDir)
-{
-	if(!boost::filesystem::exists(logDir))
-	{
-		boost::filesystem::create_directory(logDir);
-	}
-
-	char cInfoPath[100];
-	char cErrPath[100];
-	char cWarnPath[100];
-	char cFatalPath[100];
-
-	snprintf(cInfoPath,sizeof(cInfoPath),"%s%s",logDir,"/INFO_");
-	snprintf(cErrPath,sizeof(cErrPath),"%s%s",logDir,"/ERROR_");
-	snprintf(cWarnPath,sizeof(cWarnPath),"%s%s",logDir,"/WARNING_");
-	snprintf(cFatalPath,sizeof(cFatalPath),"%s%s",logDir,"/FATAL_");
-
-	google::InitGoogleLogging(cProgram);
-
-	FLAGS_logbufsecs = 0; // no cache
-	FLAGS_stop_logging_if_full_disk = true; // disk if full
-	FLAGS_alsologtostderr = false; //close to stderr
-
-	google::SetLogDestination(google::GLOG_INFO,cInfoPath);
-	google::SetLogDestination(google::GLOG_ERROR,cErrPath);
-	google::SetLogDestination(google::GLOG_WARNING,cWarnPath);
-	google::SetLogDestination(google::GLOG_FATAL,cFatalPath);
-
-
-}
 
 void* sig_thread(void* arg)
 {
@@ -202,12 +166,9 @@ void start_http_server(int pool_size = 1) {
 int main(int argc, char** argv)
 {
     //AddSigPipe();
-	std::string logDir = "../log";
-	initGlog(argv[0],logDir.c_str());
 
     int thread_num = 20;
 	LOG(INFO) << "Start program...";
-    //std::cerr<<"thread-num: "<<thread_num<<std::endl;
 	while(1)
 	{
 		start_http_server(thread_num);

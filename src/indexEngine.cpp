@@ -7,6 +7,37 @@
  ************************************************************************/
 #include "indexEngine.h"
 
+//glog initialize
+
+void initGlog(const char* cProgram, const char* logDir)
+{
+	if(!boost::filesystem::exists(logDir))
+	{
+		boost::filesystem::create_directory(logDir);
+	}
+
+	char cInfoPath[100];
+	char cErrPath[100];
+	char cWarnPath[100];
+	char cFatalPath[100];
+
+	//set log path
+	snprintf(cInfoPath,sizeof(cInfoPath),"%s%s",logDir,"/INFO_");
+	snprintf(cErrPath,sizeof(cErrPath),"%s%s",logDir,"/ERROR_");
+	snprintf(cWarnPath,sizeof(cWarnPath),"%s%s",logDir,"/IWARNING_");
+	snprintf(cFatalPath,sizeof(cFatalPath),"%s%s",logDir,"/FATAL_");
+
+	google::InitGoogleLogging(cProgram);
+
+	FLAGS_logbufsecs = 0; //no cache
+	FLAGS_stop_logging_if_full_disk = true; // no write when disk is full
+	FLAGS_alsologtostderr = false; // close to stderr
+
+	google::SetLogDestination(google::GLOG_INFO,cInfoPath);
+	google::SetLogDestination(google::GLOG_ERROR,cErrPath);
+	google::SetLogDestination(google::GLOG_WARNING,cWarnPath);
+	google::SetLogDestination(google::GLOG_FATAL,cFatalPath);
+}
 
  boost::hash<std::string> hash_query;
 //assistant function
@@ -34,9 +65,14 @@ void splitByPattern(const std::string& str,char splitPattern,vector<std::string>
 indexEngine::indexEngine(const std::string& dir,const std::string& dict_pth)
 	:dir_(dir),dict_pth_(dict_pth),isNeedflush(false)
 {
+	std::string cProgram = "RECOMMENDATION";
+	std::string logDir = "../log";
+	initGlog(cProgram.c_str(),logDir.c_str());
+
 	if(!boost::filesystem::exists(dir_))
 	{
-		std::cerr << "Tokenize dictionary path not exits!" << std::endl;
+		LOG(FATAL) << "Tokenize dictionary path not exits!";
+		//std::cerr << "Tokenize dictionary path not exits!" << std::endl;
 	}
 
 	//tokenizer
@@ -190,6 +226,11 @@ bool indexEngine::open()
     finQuery2Cate.close();
     std::cout << "读入的category size：" << query2Cate_.size() <<  std::endl;
 
+	LOG(INFO) << "Load terms dictionary size:" << terms2qIDs_.size()
+		<< "\tLoad keywords size:" << queryIdata_.size()
+		<< "\tLoad category size:" << query2Cate_.size()
+		<< "\tLoad forbidden keywords size:" << forbidList_.size();
+
 	if(0 == terms2qIDs_.size() || 0 == queryIdata_.size())
 	{
 		isNeedflush = true;
@@ -304,8 +345,9 @@ String2IntMap indexEngine::search(const std::string& userQuery,Terms2QidMap& can
     }
 	return termsMap;
 	}
-	//LOG(INFO) << "query terms num:" << candicateQid.size() << "\tcandicate query num:" 
-	//          << candicateQuery.size() << "\tcandicate category num:" << candicateCate.size();
+	LOG(INFO) << "User query terms num:" << candicateQid.size() 
+		<< "\tCandicate query num:" << candicateQuery.size() 
+		<< "\tCandicate category num:" << candicateCate.size();
 }
 
 void indexEngine::indexing(const std::string& corpus_pth)
@@ -313,7 +355,8 @@ void indexEngine::indexing(const std::string& corpus_pth)
 	ifstream ifOrigin_data; //file stream to load data from corpus
 	ifOrigin_data.open(corpus_pth.c_str());
 	if(!ifOrigin_data.is_open())
-		std::cerr << "Open corpus files failed!" << std::endl;
+		//std::cerr << "Open corpus files failed!" << std::endl;
+		LOG(ERROR) << "Open indexing corpus files error!";
 
 	std::string sLine = "";
 	std::string sData = "";
@@ -437,11 +480,11 @@ void indexEngine::flush()
 
 	ofTermsId.open(termId_pth.c_str(),ios::app);
 	if(!ofTermsId.is_open())
-		std::cerr << "Open termId dictionary failed!" << std::endl;
+		LOG(ERROR) << "Open terms dictionary error!";
 
 	ofQueryDat.open(queryDat_pth.c_str(),ios::app);
 	if(!ofQueryDat.is_open())
-		std::cerr << "Open queryDat dictionary failed!" << std::endl;
+		LOG(ERROR) << "Open queryDat dictionary error!";
 
 	//flush query data to disk,queryDat.v
 	boost::unordered_map<std::size_t,QueryData>::iterator queryIter;

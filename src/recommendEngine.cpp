@@ -28,13 +28,15 @@ recommendEngine::recommendEngine(const std::string& token_dir,const std::string&
 		boost::filesystem::create_directory(dict + "/dict/");
 	}
 
+	indexer_ = new indexEngine(token_dir_,dict + "/dict/"); //set token path and dictionary path
+	isNeedIndex = indexer_->open();//load dictionary to memory
 	//get timestamp
 	std::string resource = workdir_;
     resource += "/";
 	resource += "resource";
 	if(!boost::filesystem::exists(resource))
 	{
-		//std::cerr << "No original query sources directory!\n";
+		LOG(ERROR) << "No original query sources directory!";
 	}
 	else
 	{
@@ -45,9 +47,6 @@ recommendEngine::recommendEngine(const std::string& token_dir,const std::string&
 			in >> timestamp_;
 		in.close();
 	}
-
-	indexer_ = new indexEngine(token_dir_,dict + "/dict/"); //set token path and dictionary path
-	isNeedIndex = indexer_->open();//load dictionary to memory
 }
 
 recommendEngine::~recommendEngine()
@@ -136,12 +135,10 @@ void recommendEngine::recommendNoResults(Terms2QidMap& terms2qIDs,
 				if(bigScore1 < score)
 				{
 					bigScore1 = score;  //score
-					//res1 = queryIdata[termsIdIter->second[i]].text; // query
 					res1 = dt.txt;
 					vec.push_back(sq);
                     
 				}
-				//sortByScore(vec,sq);
 			}
 			else
 			{
@@ -208,7 +205,8 @@ void recommendEngine::recommendNoResults(Terms2QidMap& terms2qIDs,
     }
     jsonResult["recommendation"] = recommend;
 
-//	std::cout << "the most similar query is :" << ss << "\t biggest score:" << b_score << std::endl;
+	LOG(INFO) << "The most similar keyword:" << ss 
+		<< "\t biggest score:" << b_score;
 }
 
 //query correction

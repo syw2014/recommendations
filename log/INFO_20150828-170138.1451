@@ -1,0 +1,64 @@
+Log file created at: 2015/08/28 17:01:38
+Running on machine: lscm
+Log line format: [IWEF]mmdd hh:mm:ss.uuuuuu threadid file:line] msg
+I0828 17:01:38.042660  1451 indexEngine.cpp:229] Load terms dictionary size:270513	Load keywords size:4810005	Load category size:1548873	Load forbidden keywords size:8
+E0828 17:01:38.042922  1451 recommendEngine.cpp:39] No original query sources directory!
+I0828 17:01:38.043499  1451 q_recommend.cc:171] Start program...
+I0828 17:01:38.043686  1451 q_recommend.cc:136] Creat thread:0
+I0828 17:01:38.043812  1451 q_recommend.cc:136] Creat thread:1
+I0828 17:01:38.043835  1451 q_recommend.cc:136] Creat thread:2
+I0828 17:01:38.043853  1451 q_recommend.cc:136] Creat thread:3
+I0828 17:01:38.043872  1451 q_recommend.cc:136] Creat thread:4
+I0828 17:01:38.043889  1451 q_recommend.cc:136] Creat thread:5
+I0828 17:01:38.043908  1451 q_recommend.cc:136] Creat thread:6
+I0828 17:01:38.043926  1451 q_recommend.cc:136] Creat thread:7
+I0828 17:01:38.043946  1451 q_recommend.cc:136] Creat thread:8
+I0828 17:01:38.043963  1451 q_recommend.cc:136] Creat thread:9
+I0828 17:01:38.043983  1451 q_recommend.cc:136] Creat thread:10
+I0828 17:01:38.043999  1451 q_recommend.cc:136] Creat thread:11
+I0828 17:01:38.044018  1451 q_recommend.cc:136] Creat thread:12
+I0828 17:01:38.044040  1451 q_recommend.cc:136] Creat thread:13
+I0828 17:01:38.044060  1451 q_recommend.cc:136] Creat thread:14
+I0828 17:01:38.044078  1451 q_recommend.cc:136] Creat thread:15
+I0828 17:01:38.044095  1451 q_recommend.cc:136] Creat thread:16
+I0828 17:01:38.044183  1451 q_recommend.cc:136] Creat thread:17
+I0828 17:01:38.044210  1451 q_recommend.cc:136] Creat thread:18
+I0828 17:01:38.044226  1451 q_recommend.cc:136] Creat thread:19
+I0828 17:01:51.586576  1456 q_recommend.cc:85] Request URI:/search
+I0828 17:01:51.657949  1456 recommendEngine.cpp:208] The most similar keyword:手机	 biggest score:0.16327
+I0828 17:01:51.658017  1456 recommendEngine.cpp:356] GetCandicate time: 34683us	Find NoResult time:36665us
+I0828 17:01:51.664006  1456 q_recommend.cc:115] Request time:158	total time:77514	Query:手机123	Recommend:{
+   "Forbidden" : "false",
+   "NoResult_Recommend" : "手机",
+   "category" : null,
+   "recommendation" : [
+      "手机",
+      "乐视手机",
+      "手机 vivo",
+      "vivo手机",
+      "手机 oppo",
+      "小米4手机",
+      "手机 htc",
+      "老年手机",
+      "合约机 手机"
+   ]
+}
+I0828 17:01:54.124272  1456 q_recommend.cc:85] Request URI:/search
+I0828 17:01:54.191813  1456 recommendEngine.cpp:208] The most similar keyword:手机	 biggest score:0.16327
+I0828 17:01:54.191874  1456 recommendEngine.cpp:356] GetCandicate time: 30241us	Find NoResult time:37294us
+I0828 17:01:54.198820  1456 q_recommend.cc:115] Request time:70	total time:74555	Query:手机123	Recommend:{
+   "Forbidden" : "false",
+   "NoResult_Recommend" : "手机",
+   "category" : null,
+   "recommendation" : [
+      "手机",
+      "乐视手机",
+      "手机 vivo",
+      "vivo手机",
+      "手机 oppo",
+      "小米4手机",
+      "手机 htc",
+      "老年手机",
+      "合约机 手机"
+   ]
+}
