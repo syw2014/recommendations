@@ -52,11 +52,13 @@ class recommendEngine
 					,Terms2QidMap& terms2qIDs
 					,QueryIdataMap& queryIdata
 					,QueryCateMap& query2Cate
+					,QueryCateMap& rsKeywords
 					,String2IntMap& termsIdMap); //get candicate
 
 			void recommendNoResults(Terms2QidMap& terms2qIDs
 					,QueryIdataMap& queryIdata
 			        ,QueryCateMap& query2Cate
+					,QueryCateMap& rsKeywords
 					,Json::Value& jsonResult
 					,String2IntMap& termsIdMap
 					,std::string inputQuery); //

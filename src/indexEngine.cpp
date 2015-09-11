@@ -182,6 +182,35 @@ bool indexEngine::open()
 	}
 	finForbid.close();
 
+	//load rskeywords form TaoBao
+	ifstream finRskeywords;
+	string rs_pth = dict_pth_ + "/HotRskeywords.v";
+	finRskeywords.open(rs_pth.c_str());
+	if(finRskeywords.is_open()){
+		vector<std::string> context;
+		vector<std::string> rskeywords;
+		sLine = "";
+		std::size_t hsId;
+		while(getline(finRskeywords,sLine))
+		{
+			if(0 >= sLine.length())
+				continue;
+			boost::split(context,sLine,boost::is_any_of("\t"));
+			if(2 > context.size())
+				continue;
+			hsId = boost::lexical_cast<std::size_t>(context[0]);
+			boost::unordered_map<std::size_t,vector<std::string> >::iterator rsIter;
+			rsIter = rsKeyTaoBao_.find(hsId);
+			if(rsIter != rsKeyTaoBao_.end())
+				continue;
+			for(std::size_t i = 1; i < context.size(); ++i)
+					rskeywords.push_back(context[i]);
+			rsKeyTaoBao_.insert(make_pair(hsId,rskeywords));
+		}
+	}
+	finRskeywords.close();
+	std::cout << "load rskeywords size:" << rsKeyTaoBao_.size() << std::endl;
+
 	//load category dictonary
 	ifstream finQuery2Cate;
 	string cate_pth = dict_pth_ + "/query2Cate.v";
@@ -287,8 +316,11 @@ void indexEngine::insert(QueryData& userQuery)
 }
 
 //get candicate query id,category
-String2IntMap indexEngine::search(const std::string& userQuery,Terms2QidMap& candicateQid
-		,QueryIdataMap& candicateQuery,QueryCateMap& candicateCate)
+String2IntMap indexEngine::search(const std::string& userQuery
+		,Terms2QidMap& candicateQid
+		,QueryIdataMap& candicateQuery
+		,QueryCateMap& candicateCate
+		,QueryCateMap& rsKeywords)
 {
 	std::string nstr = userQuery;
 	if(0 != userQuery.length())
@@ -329,12 +361,12 @@ String2IntMap indexEngine::search(const std::string& userQuery,Terms2QidMap& can
             }
 		}
 	}
-
+	GetProperty(userQuery,candicateCate,rsKeywords);
 //	std::cout << "termsmap.size" << termsMap.size() << "\tcandicateqid.size()" 
 //		<< candicateQid.size() <<"\tcandicate query.size()" 
 //		<< candicateQuery.size()<< std::endl;
     //get candicate category
-	std::string str = userQuery;
+/*	std::string str = userQuery;
 	Normalize::normalize(str);
     std::size_t qID = hash_query(str);
     QueryCateMapIter cateIter;
@@ -342,12 +374,32 @@ String2IntMap indexEngine::search(const std::string& userQuery,Terms2QidMap& can
     if(query2Cate_.end() != cateIter)
     {
         candicateCate.insert(make_pair(qID,cateIter->second));
-    }
+    }*/
 	return termsMap;
 	}
 	LOG(INFO) << "User query terms num:" << candicateQid.size() 
 		<< "\tCandicate query num:" << candicateQuery.size() 
 		<< "\tCandicate category num:" << candicateCate.size();
+}
+
+void indexEngine::GetProperty(const std::string& userQuery
+		,QueryCateMap& candicateCate
+		,QueryCateMap& rsKeywords)
+{
+	std::string uquery = userQuery;
+	Normalize::normalize(uquery);
+	std::size_t hsQuery = hash_query(uquery);
+	QueryCateMapIter cateIter;
+	QueryCateMapIter rsKeyIter;
+	cateIter = query2Cate_.find(hsQuery);
+	if(query2Cate_.end() != cateIter)
+		candicateCate.insert(make_pair(hsQuery,cateIter->second));
+
+	rsKeyIter = rsKeyTaoBao_.find(hsQuery);
+	if(rsKeyTaoBao_.end() != rsKeyIter)
+		rsKeywords.insert(make_pair(hsQuery,rsKeyIter->second));
+	else
+		std::cout << "not found\n";
 }
 
 void indexEngine::indexing(const std::string& corpus_pth)

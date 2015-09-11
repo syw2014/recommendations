@@ -62,19 +62,24 @@ void recommendEngine::getCandicate(const std::string& userQuery
 					,Terms2QidMap& terms2qIDs
 					,QueryIdataMap& queryIdata
 					,QueryCateMap& query2Cate
+					,QueryCateMap& rsKeywords
 					,String2IntMap& termsIdMap)
 {
 	//buildEngine();
 //	if(0 == userQuery.length())
 //		return;
-   termsIdMap = indexer_->search(userQuery,terms2qIDs,queryIdata,query2Cate);
+   termsIdMap = indexer_->search(userQuery,terms2qIDs
+		   ,queryIdata,query2Cate,rsKeywords);
 }
 
 //no results recommendation
 void recommendEngine::recommendNoResults(Terms2QidMap& terms2qIDs,
 		QueryIdataMap& queryIdata
-        ,QueryCateMap& query2Cate,Json::Value& jsonResult
-        ,String2IntMap& termsIdMap,std::string inputQuery)
+        ,QueryCateMap& query2Cate
+		,QueryCateMap& rsKeywords
+		,Json::Value& jsonResult
+        ,String2IntMap& termsIdMap
+		,std::string inputQuery)
 {
 	//no candicate or no terms
 //	if(0 == terms2qIDs.size() || 0 == queryIdata.size() || 0 == termsIdMap.size())
@@ -149,7 +154,8 @@ void recommendEngine::recommendNoResults(Terms2QidMap& terms2qIDs,
 					res2 = queryIdata[termsIdIter->second[i]].text; //get query 
 				}
 			}
-
+			if(rsKeywords.size() == 0)
+			{
 			//find related
 			if(inputQuery.size() < 31 )
             {
@@ -160,6 +166,7 @@ void recommendEngine::recommendNoResults(Terms2QidMap& terms2qIDs,
             dt.score = (float) wScore * simScore;
             sortByScore(queryScoreVector,dt);
             }
+			}
 		}
 	}
 	
@@ -188,6 +195,16 @@ void recommendEngine::recommendNoResults(Terms2QidMap& terms2qIDs,
 	//get TopK
 	std::size_t Topk = 9;
 	std::size_t upperbound;
+	Json::Value recommend;
+	if(rsKeywords.size() != 0)
+	{
+		QueryCateMapIter rsIter;
+		queryScoreVector.clear();
+		for(rsIter = rsKeywords.begin(); rsIter != rsKeywords.end(); ++rsIter)
+			for(int i = 0; i < rsIter->second.size();++i)
+			recommend.append(rsIter->second[i]);
+	}
+	else
 	if(inputQuery.size() > 31)
 		queryScoreVector = vec;
 
@@ -196,7 +213,6 @@ void recommendEngine::recommendNoResults(Terms2QidMap& terms2qIDs,
 	else
 		upperbound = queryScoreVector.size();
 
-    Json::Value recommend;
     for(std::size_t i = 0; i < queryScoreVector.size(); ++i)
     {
         if(3 >= queryScoreVector[i].txt.length() || inputQuery == queryScoreVector[i].txt)
@@ -320,7 +336,9 @@ void recommendEngine::jsonResults(const std::string& userQuery,std::string& res)
     Terms2QidMap terms2qIDs;
     QueryIdataMap queryIdata;
     QueryCateMap query2Cate;
+	QueryCateMap rsKeywords;
     String2IntMap termsIdMap;
+
     if(indexer_->isForbidden(userQuery))
 	{
 		jsonResult["Forbidden"] = "true";
@@ -336,13 +354,14 @@ void recommendEngine::jsonResults(const std::string& userQuery,std::string& res)
     boost::posix_time::millisec_posix_time_system_config::time_duration_type time_elapse;
 
     time_start = boost::posix_time::microsec_clock::universal_time();
-	getCandicate(userQuery,terms2qIDs,queryIdata,query2Cate,termsIdMap);
+	getCandicate(userQuery,terms2qIDs,queryIdata,query2Cate,rsKeywords,termsIdMap);
     time_end = boost::posix_time::microsec_clock::universal_time();
     time_elapse = time_end - time_start;
     int cost_time1 = time_elapse.ticks();
 
     time_start = boost::posix_time::microsec_clock::universal_time();
-	recommendNoResults(terms2qIDs,queryIdata,query2Cate,jsonResult,termsIdMap,userQuery);
+	recommendNoResults(terms2qIDs,queryIdata,query2Cate,rsKeywords
+			,jsonResult,termsIdMap,userQuery);
     time_end = boost::posix_time::microsec_clock::universal_time();
     time_elapse = time_end - time_start;
     int cost_time2 = time_elapse.ticks();

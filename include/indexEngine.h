@@ -22,7 +22,7 @@
 
 #include <util/hashFunction.h>
 #include <glog/logging.h>
-
+#include <ctype.h>
 #include "knlp/horse_tokenize.h"
 #include "normalize.h"
 
@@ -64,8 +64,14 @@ class indexEngine
 		void insert(QueryData& userQuery); //insert an userQuery
 		String2IntMap search(const std::string& userQuery,
 				Terms2QidMap& candicateQids
-				,QueryIdataMap& candicateQuery,
-				QueryCateMap& candicateCate);//search query
+				,QueryIdataMap& candicateQuery
+				,QueryCateMap& candicateCate
+				,QueryCateMap& rsKeywords);//search query
+	
+		//get property like category,attribute,rskeywords form TaoBao
+		void GetProperty(const std::string& userQuery
+				,QueryCateMap& candicateCate
+				,QueryCateMap& rsKeywords);
 
 		void indexing(const std::string& corpus_pth);
 		void tokenTerms(const std::string&, String2IntMap&);
@@ -80,6 +86,7 @@ class indexEngine
 		QueryIdataMap queryIdata_; //query id ,query data
         QueryCateMap query2Cate_;   //query --> category
 		std::set<std::string> forbidList_; // forbid keywords list
+		QueryCateMap rsKeyTaoBao_;
 
 		std::string dir_; //tokenize dictionary path
 		std::string dict_pth_;
