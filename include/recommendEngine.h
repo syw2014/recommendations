@@ -73,6 +73,7 @@ class recommendEngine
 					,std::string inputQuery
 					,const std::size_t TopK = 9);
 
+			void InsertRsKeywords(std::string& KeyAndRskey);
 			bool isNeedBuild();
 			bool isNeedAdd();
 			void jsonResults(const std::string& userQuery,std::string& res);

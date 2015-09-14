@@ -73,6 +73,8 @@ class indexEngine
 				,QueryCateMap& candicateCate
 				,QueryCateMap& rsKeywords);
 
+		void InsertRsKeywords(std::string& key,vector<std::string>& rskeywords);
+
 		void indexing(const std::string& corpus_pth);
 		void tokenTerms(const std::string&, String2IntMap&);
 		void flush();

@@ -1,0 +1,34 @@
+Log file created at: 2015/09/14 16:33:33
+Running on machine: lscm
+Log line format: [IWEF]mmdd hh:mm:ss.uuuuuu threadid file:line] msg
+I0914 16:33:33.240850  4772 indexEngine.cpp:261] Load terms dictionary size:270513	Load keywords size:4810005	Load category size:1548873	Load forbidden keywords size:8
+E0914 16:33:33.241139  4772 recommendEngine.cpp:39] No original query sources directory!
+I0914 16:33:33.241487  4772 q_recommend.cc:182] Start program...
+I0914 16:33:33.241508  4772 q_recommend.cc:147] Creat thread:0
+I0914 16:33:33.241581  4772 q_recommend.cc:147] Creat thread:1
+I0914 16:33:33.241612  4772 q_recommend.cc:147] Creat thread:2
+I0914 16:33:33.241631  4772 q_recommend.cc:147] Creat thread:3
+I0914 16:33:33.241646  4772 q_recommend.cc:147] Creat thread:4
+I0914 16:33:33.241659  4772 q_recommend.cc:147] Creat thread:5
+I0914 16:33:33.241673  4772 q_recommend.cc:147] Creat thread:6
+I0914 16:33:33.241695  4772 q_recommend.cc:147] Creat thread:7
+I0914 16:33:33.241718  4772 q_recommend.cc:147] Creat thread:8
+I0914 16:33:33.241734  4772 q_recommend.cc:147] Creat thread:9
+I0914 16:33:33.241749  4772 q_recommend.cc:147] Creat thread:10
+I0914 16:33:33.241772  4772 q_recommend.cc:147] Creat thread:11
+I0914 16:33:33.241786  4772 q_recommend.cc:147] Creat thread:12
+I0914 16:33:33.241798  4772 q_recommend.cc:147] Creat thread:13
+I0914 16:33:33.241814  4772 q_recommend.cc:147] Creat thread:14
+I0914 16:33:33.241827  4772 q_recommend.cc:147] Creat thread:15
+I0914 16:33:33.241839  4772 q_recommend.cc:147] Creat thread:16
+I0914 16:33:33.241853  4772 q_recommend.cc:147] Creat thread:17
+I0914 16:33:33.241870  4772 q_recommend.cc:147] Creat thread:18
+I0914 16:33:33.241883  4772 q_recommend.cc:147] Creat thread:19
+I0914 16:33:37.604179  4873 recommendEngine.cpp:224] The most similar keyword:key	 biggest score:4.36782
+I0914 16:33:37.604249  4873 recommendEngine.cpp:383] GetCandicate time: 8078us	Find NoResult time:25011us
+I0914 16:33:37.606849  4873 q_recommend.cc:125] Request time:17	total time:35712	Query:{"key":["a","b"]}	Recommend:{
+   "Forbidden" : "false",
+   "NoResult_Recommend" : "key",
+   "category" : null,
+   "recommendation" : [ "蒸汽火车", "b ab", "欧乐b", "agnes b", "b家", "8675 a" ]
+}

@@ -193,6 +193,7 @@ bool indexEngine::open()
 		std::size_t hsId;
 		while(getline(finRskeywords,sLine))
 		{
+			rskeywords.clear();
 			if(0 >= sLine.length())
 				continue;
 			boost::split(context,sLine,boost::is_any_of("\t"));
@@ -200,11 +201,13 @@ bool indexEngine::open()
 				continue;
 			hsId = boost::lexical_cast<std::size_t>(context[0]);
 			boost::unordered_map<std::size_t,vector<std::string> >::iterator rsIter;
+			//std::cout << "key：" << context[0] << "\t hash:" << hsId << std::endl;
 			rsIter = rsKeyTaoBao_.find(hsId);
 			if(rsIter != rsKeyTaoBao_.end())
 				continue;
 			for(std::size_t i = 1; i < context.size(); ++i)
-					rskeywords.push_back(context[i]);
+			if(context[i].size() != 0)	
+				rskeywords.push_back(context[i]);
 			rsKeyTaoBao_.insert(make_pair(hsId,rskeywords));
 		}
 	}
@@ -382,6 +385,31 @@ String2IntMap indexEngine::search(const std::string& userQuery
 		<< "\tCandicate category num:" << candicateCate.size();
 }
 
+//insert taobao rskeywords
+void indexEngine::InsertRsKeywords(std::string& key,vector<std::string>& rskeywords)
+{
+	std::size_t hsId = hash_query(key);
+	QueryCateMapIter it;
+	it = rsKeyTaoBao_.find(hsId);
+	if(it == rsKeyTaoBao_.end())
+	{
+		rsKeyTaoBao_.insert(make_pair(hsId,rskeywords));
+		string rs_pth = dict_pth_ + "/HotRskeywords.v";
+		ofstream out;
+		out.open(rs_pth.c_str(),iostream::app);
+		if(out)
+		{
+			out << hsId << "\t";
+			for(std::size_t i = 0; i < rskeywords.size();++i)
+				out << rskeywords[i] << "\t";
+			out << endl;
+		}
+		out.close();
+	}
+	else
+		std::cout << "key already exist!\n";
+}
+
 void indexEngine::GetProperty(const std::string& userQuery
 		,QueryCateMap& candicateCate
 		,QueryCateMap& rsKeywords)
@@ -394,12 +422,12 @@ void indexEngine::GetProperty(const std::string& userQuery
 	cateIter = query2Cate_.find(hsQuery);
 	if(query2Cate_.end() != cateIter)
 		candicateCate.insert(make_pair(hsQuery,cateIter->second));
-
+	//std::cout << "hash value:" << hsQuery << std::endl;
 	rsKeyIter = rsKeyTaoBao_.find(hsQuery);
 	if(rsKeyTaoBao_.end() != rsKeyIter)
 		rsKeywords.insert(make_pair(hsQuery,rsKeyIter->second));
-	else
-		std::cout << "not found\n";
+//	else
+	//	std::cout << "not found\n";
 }
 
 void indexEngine::indexing(const std::string& corpus_pth)

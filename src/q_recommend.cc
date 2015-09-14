@@ -76,7 +76,16 @@ static int ev_handler(struct mg_connection *conn, enum mg_event ev) {
         bool succ = true;
         char buffer[65535];
 		time_start = boost::posix_time::microsec_clock::universal_time();
+		if(strcmp(conn->uri,"/put") == 0 &&
+		   strcmp(conn->request_method,"POST") == 0)
+		{
+			std::string content(conn->content,conn->content_len);
+			gRecomm.InsertRsKeywords(content);
 
+			return MG_FALSE;
+		}
+		else
+		{
         try {
 				//get
                 if(mg_get_var(conn, "query", buffer, sizeof(buffer))>0) {
@@ -105,6 +114,7 @@ static int ev_handler(struct mg_connection *conn, enum mg_event ev) {
         if(succ && rstr.size() != 0) {
         gRecomm.jsonResults(rstr,json_result);
         }
+		
 		time_end = boost::posix_time::microsec_clock::universal_time();
 		time_elapse = time_end - time_start;
 		int total_time = time_elapse.ticks();
@@ -119,6 +129,7 @@ static int ev_handler(struct mg_connection *conn, enum mg_event ev) {
         //mg_printf_data(conn, "Hello! Requested URI is [%s] ", content.c_str());
         mg_printf_data(conn, json_result.c_str());
         return MG_TRUE;
+		}
     }
     default: return MG_FALSE;
     }

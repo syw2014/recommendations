@@ -1,0 +1,236 @@
+Log file created at: 2015/09/14 16:28:19
+Running on machine: lscm
+Log line format: [IWEF]mmdd hh:mm:ss.uuuuuu threadid file:line] msg
+I0914 16:28:19.705934  3018 indexEngine.cpp:261] Load terms dictionary size:270513	Load keywords size:4810005	Load category size:1548873	Load forbidden keywords size:8
+E0914 16:28:19.706171  3018 recommendEngine.cpp:39] No original query sources directory!
+I0914 16:28:19.706571  3018 q_recommend.cc:182] Start program...
+I0914 16:28:19.706600  3018 q_recommend.cc:147] Creat thread:0
+I0914 16:28:19.706665  3018 q_recommend.cc:147] Creat thread:1
+I0914 16:28:19.706712  3018 q_recommend.cc:147] Creat thread:2
+I0914 16:28:19.706729  3018 q_recommend.cc:147] Creat thread:3
+I0914 16:28:19.706743  3018 q_recommend.cc:147] Creat thread:4
+I0914 16:28:19.706758  3018 q_recommend.cc:147] Creat thread:5
+I0914 16:28:19.706771  3018 q_recommend.cc:147] Creat thread:6
+I0914 16:28:19.706799  3018 q_recommend.cc:147] Creat thread:7
+I0914 16:28:19.706814  3018 q_recommend.cc:147] Creat thread:8
+I0914 16:28:19.706830  3018 q_recommend.cc:147] Creat thread:9
+I0914 16:28:19.706843  3018 q_recommend.cc:147] Creat thread:10
+I0914 16:28:19.706856  3018 q_recommend.cc:147] Creat thread:11
+I0914 16:28:19.706871  3018 q_recommend.cc:147] Creat thread:12
+I0914 16:28:19.706884  3018 q_recommend.cc:147] Creat thread:13
+I0914 16:28:19.706899  3018 q_recommend.cc:147] Creat thread:14
+I0914 16:28:19.706913  3018 q_recommend.cc:147] Creat thread:15
+I0914 16:28:19.706939  3018 q_recommend.cc:147] Creat thread:16
+I0914 16:28:19.706956  3018 q_recommend.cc:147] Creat thread:17
+I0914 16:28:19.706974  3018 q_recommend.cc:147] Creat thread:18
+I0914 16:28:19.706989  3018 q_recommend.cc:147] Creat thread:19
+I0914 16:28:49.922227  3115 q_recommend.cc:94] Request URI:/
+I0914 16:28:50.098296  3115 recommendEngine.cpp:224] The most similar keyword:null	 biggest score:0.118622
+I0914 16:28:50.098351  3115 recommendEngine.cpp:383] GetCandicate time: 89038us	Find NoResult time:86912us
+I0914 16:28:50.134549  3115 q_recommend.cc:125] Request time:180	total time:212325	Query:连衣裙	Recommend:{
+   "Forbidden" : "false",
+   "NoResult_Recommend" : "null",
+   "category" : [
+      [ "服装服饰", "女装", "连衣裙" ],
+      [ "服装服饰", "女装" ],
+      [ "服装服饰", "其他服饰", "中老年服饰" ],
+      [ "母婴童装", "儿童服饰", "童装" ],
+      [ "服装服饰", "其他服饰" ],
+      [ "母婴童装", "孕产妇", "孕妇装" ],
+      [ "服装服饰", "女装", "半身裙" ],
+      [ "服装服饰", "女装", "蕾丝衫/雪纺衫" ],
+      [ "服装服饰", "其他服饰", "职业装" ],
+      [ "服装服饰", "女装", "T恤" ]
+   ],
+   "recommendation" : [
+      "长袖连衣裙",
+      "秋季连衣裙",
+      "蕾丝连衣裙",
+      "雪纺连衣裙",
+      "针织连衣裙",
+      "女装套装",
+      "秋装新款",
+      "长袖t恤女",
+      "真丝连衣裙",
+      "棉麻连衣裙",
+      "妈妈连衣裙",
+      "大码连衣裙",
+      "牛仔连衣裙",
+      "红色连衣裙"
+   ]
+}
+I0914 16:28:51.688665  3115 q_recommend.cc:94] Request URI:/
+I0914 16:28:51.862361  3115 recommendEngine.cpp:224] The most similar keyword:null	 biggest score:0.118622
+I0914 16:28:51.862452  3115 recommendEngine.cpp:383] GetCandicate time: 86185us	Find NoResult time:87520us
+I0914 16:28:51.910579  3115 q_recommend.cc:125] Request time:73	total time:221910	Query:连衣裙	Recommend:{
+   "Forbidden" : "false",
+   "NoResult_Recommend" : "null",
+   "category" : [
+      [ "服装服饰", "女装", "连衣裙" ],
+      [ "服装服饰", "女装" ],
+      [ "服装服饰", "其他服饰", "中老年服饰" ],
+      [ "母婴童装", "儿童服饰", "童装" ],
+      [ "服装服饰", "其他服饰" ],
+      [ "母婴童装", "孕产妇", "孕妇装" ],
+      [ "服装服饰", "女装", "半身裙" ],
+      [ "服装服饰", "女装", "蕾丝衫/雪纺衫" ],
+      [ "服装服饰", "其他服饰", "职业装" ],
+      [ "服装服饰", "女装", "T恤" ]
+   ],
+   "recommendation" : [
+      "长袖连衣裙",
+      "秋季连衣裙",
+      "蕾丝连衣裙",
+      "雪纺连衣裙",
+      "针织连衣裙",
+      "女装套装",
+      "秋装新款",
+      "长袖t恤女",
+      "真丝连衣裙",
+      "棉麻连衣裙",
+      "妈妈连衣裙",
+      "大码连衣裙",
+      "牛仔连衣裙",
+      "红色连衣裙"
+   ]
+}
+I0914 16:28:52.867422  3115 q_recommend.cc:94] Request URI:/
+I0914 16:28:53.051462  3115 recommendEngine.cpp:224] The most similar keyword:null	 biggest score:0.118622
+I0914 16:28:53.051558  3115 recommendEngine.cpp:383] GetCandicate time: 91261us	Find NoResult time:92787us
+I0914 16:28:53.105828  3115 q_recommend.cc:125] Request time:81	total time:238407	Query:连衣裙	Recommend:{
+   "Forbidden" : "false",
+   "NoResult_Recommend" : "null",
+   "category" : [
+      [ "服装服饰", "女装", "连衣裙" ],
+      [ "服装服饰", "女装" ],
+      [ "服装服饰", "其他服饰", "中老年服饰" ],
+      [ "母婴童装", "儿童服饰", "童装" ],
+      [ "服装服饰", "其他服饰" ],
+      [ "母婴童装", "孕产妇", "孕妇装" ],
+      [ "服装服饰", "女装", "半身裙" ],
+      [ "服装服饰", "女装", "蕾丝衫/雪纺衫" ],
+      [ "服装服饰", "其他服饰", "职业装" ],
+      [ "服装服饰", "女装", "T恤" ]
+   ],
+   "recommendation" : [
+      "长袖连衣裙",
+      "秋季连衣裙",
+      "蕾丝连衣裙",
+      "雪纺连衣裙",
+      "针织连衣裙",
+      "女装套装",
+      "秋装新款",
+      "长袖t恤女",
+      "真丝连衣裙",
+      "棉麻连衣裙",
+      "妈妈连衣裙",
+      "大码连衣裙",
+      "牛仔连衣裙",
+      "红色连衣裙"
+   ]
+}
+I0914 16:28:54.435636  3115 q_recommend.cc:94] Request URI:/
+I0914 16:28:54.616122  3115 recommendEngine.cpp:224] The most similar keyword:null	 biggest score:0.118622
+I0914 16:28:54.616197  3115 recommendEngine.cpp:383] GetCandicate time: 91129us	Find NoResult time:89308us
+I0914 16:28:54.652137  3115 q_recommend.cc:125] Request time:124	total time:216509	Query:连衣裙	Recommend:{
+   "Forbidden" : "false",
+   "NoResult_Recommend" : "null",
+   "category" : [
+      [ "服装服饰", "女装", "连衣裙" ],
+      [ "服装服饰", "女装" ],
+      [ "服装服饰", "其他服饰", "中老年服饰" ],
+      [ "母婴童装", "儿童服饰", "童装" ],
+      [ "服装服饰", "其他服饰" ],
+      [ "母婴童装", "孕产妇", "孕妇装" ],
+      [ "服装服饰", "女装", "半身裙" ],
+      [ "服装服饰", "女装", "蕾丝衫/雪纺衫" ],
+      [ "服装服饰", "其他服饰", "职业装" ],
+      [ "服装服饰", "女装", "T恤" ]
+   ],
+   "recommendation" : [
+      "长袖连衣裙",
+      "秋季连衣裙",
+      "蕾丝连衣裙",
+      "雪纺连衣裙",
+      "针织连衣裙",
+      "女装套装",
+      "秋装新款",
+      "长袖t恤女",
+      "真丝连衣裙",
+      "棉麻连衣裙",
+      "妈妈连衣裙",
+      "大码连衣裙",
+      "牛仔连衣裙",
+      "红色连衣裙"
+   ]
+}
+I0914 16:29:06.847160  3115 q_recommend.cc:94] Request URI:/
+I0914 16:29:06.855482  3115 recommendEngine.cpp:224] The most similar keyword:null	 biggest score:1.09392
+I0914 16:29:06.855675  3115 recommendEngine.cpp:383] GetCandicate time: 4547us	Find NoResult time:3809us
+I0914 16:29:06.858273  3115 q_recommend.cc:125] Request time:154	total time:11106	Query:面膜	Recommend:{
+   "Forbidden" : "false",
+   "NoResult_Recommend" : "null",
+   "category" : [
+      [ "美容美妆", "美容护肤", "面膜" ],
+      [ "美容美妆", "美容护肤", "男士护理" ],
+      [ "美容美妆", "美容护肤", "护理套装" ],
+      [ "美容美妆", "彩妆", "化妆/美容工具" ],
+      [ "美容美妆", "美容护肤", "乳液/面霜" ],
+      [ "美容美妆", "美容护肤", "T区护理" ],
+      [ "美容美妆", "美容护肤", "眼部护理" ],
+      [ "美容美妆", "美容护肤", "身体护理" ],
+      [ "美容美妆", "美容护肤", "洁面" ],
+      [ "图书音像", "生活", "娱乐时尚" ]
+   ],
+   "recommendation" : [
+      "蚕丝面膜",
+      "美白面膜",
+      "睡眠面膜",
+      "补水面膜",
+      "压缩面膜",
+      "洗面奶",
+      "面膜补水保湿",
+      "爽肤水",
+      "海藻面膜",
+      "可莱丝面膜",
+      "卡丝面膜",
+      "男士面膜",
+      "悦诗风吟面膜",
+      "春雨面膜"
+   ]
+}
+I0914 16:29:13.494034  3115 q_recommend.cc:94] Request URI:/
+I0914 16:29:13.513046  3115 recommendEngine.cpp:224] The most similar keyword:null	 biggest score:1.09392
+I0914 16:29:13.513160  3115 recommendEngine.cpp:383] GetCandicate time: 10818us	Find NoResult time:7907us
+I0914 16:29:13.514567  3115 q_recommend.cc:125] Request time:395	total time:20543	Query:面膜	Recommend:{
+   "Forbidden" : "false",
+   "NoResult_Recommend" : "null",
+   "category" : [
+      [ "美容美妆", "美容护肤", "面膜" ],
+      [ "美容美妆", "美容护肤", "男士护理" ],
+      [ "美容美妆", "美容护肤", "护理套装" ],
+      [ "美容美妆", "彩妆", "化妆/美容工具" ],
+      [ "美容美妆", "美容护肤", "乳液/面霜" ],
+      [ "美容美妆", "美容护肤", "T区护理" ],
+      [ "美容美妆", "美容护肤", "眼部护理" ],
+      [ "美容美妆", "美容护肤", "身体护理" ],
+      [ "美容美妆", "美容护肤", "洁面" ],
+      [ "图书音像", "生活", "娱乐时尚" ]
+   ],
+   "recommendation" : [
+      "蚕丝面膜",
+      "美白面膜",
+      "睡眠面膜",
+      "补水面膜",
+      "压缩面膜",
+      "洗面奶",
+      "面膜补水保湿",
+      "爽肤水",
+      "海藻面膜",
+      "可莱丝面膜",
+      "卡丝面膜",
+      "男士面膜",
+      "悦诗风吟面膜",
+      "春雨面膜"
+   ]
+}

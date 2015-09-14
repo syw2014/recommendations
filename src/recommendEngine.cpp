@@ -225,6 +225,32 @@ void recommendEngine::recommendNoResults(Terms2QidMap& terms2qIDs,
 		<< "\t biggest score:" << b_score;
 }
 
+//insert taobao rskeywords
+//{"query":"","rskeywords":["",""]}
+void recommendEngine::InsertRsKeywords(std::string& KeyAndRskey)
+{
+	if(KeyAndRskey.size() == 0)
+		return;
+
+	Json::Reader reader;
+	Json::Value  rskey;
+	vector<std::string> rskeywords;
+	std::cout << KeyAndRskey << std::endl;
+	bool flag = reader.parse(KeyAndRskey,rskey,false);
+	if(flag)
+	{
+		for(std::size_t i = 0; i < rskey["rskeywords"].size();++i)
+		{
+			std::cout << rskey["rskeywords"][i] << ",";
+			rskeywords.push_back(rskey["rskeywords"][i].asString());
+		}
+		std::cout << rskey["query"] << endl;
+		std::string query = rskey["query"].asString();
+		indexer_->InsertRsKeywords(query,rskeywords);
+	}
+
+}
+
 //query correction
 void recommendEngine::recommendCorrection()
 {
