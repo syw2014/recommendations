@@ -246,7 +246,7 @@ void recommendEngine::InsertRsKeywords(std::string& KeyAndRskey)
 		}
 		std::cout << rskey["query"] << endl;
 		std::string query = rskey["query"].asString();
-		indexer_->InsertRsKeywords(query,rskeywords);
+		//indexer_->InsertRsKeywords(query,rskeywords);
 	}
 
 }
