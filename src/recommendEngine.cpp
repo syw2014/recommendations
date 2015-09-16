@@ -235,6 +235,7 @@ void recommendEngine::InsertRsKeywords(std::string& KeyAndRskey)
 	Json::Reader reader;
 	Json::Value  rskey;
 	vector<std::string> rskeywords;
+	rskeywords.clear();
 	std::cout << KeyAndRskey << std::endl;
 	bool flag = reader.parse(KeyAndRskey,rskey,false);
 	if(flag)
@@ -246,7 +247,7 @@ void recommendEngine::InsertRsKeywords(std::string& KeyAndRskey)
 		}
 		std::cout << rskey["query"] << endl;
 		std::string query = rskey["query"].asString();
-		//indexer_->InsertRsKeywords(query,rskeywords);
+		indexer_->InsertRsKeywords(query,rskeywords);
 	}
 
 }

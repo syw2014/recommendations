@@ -1,0 +1,26 @@
+Log file created at: 2015/09/16 18:08:29
+Running on machine: lscm
+Log line format: [IWEF]mmdd hh:mm:ss.uuuuuu threadid file:line] msg
+I0916 18:08:29.833675 27430 indexEngine.cpp:261] Load terms dictionary size:270513	Load keywords size:4810005	Load category size:1548873	Load forbidden keywords size:8
+E0916 18:08:29.833854 27430 recommendEngine.cpp:39] No original query sources directory!
+I0916 18:08:29.834178 27430 q_recommend.cc:182] Start program...
+I0916 18:08:29.834195 27430 q_recommend.cc:147] Creat thread:0
+I0916 18:08:29.834256 27430 q_recommend.cc:147] Creat thread:1
+I0916 18:08:29.834274 27430 q_recommend.cc:147] Creat thread:2
+I0916 18:08:29.834298 27430 q_recommend.cc:147] Creat thread:3
+I0916 18:08:29.834311 27430 q_recommend.cc:147] Creat thread:4
+I0916 18:08:29.834339 27430 q_recommend.cc:147] Creat thread:5
+I0916 18:08:29.834362 27430 q_recommend.cc:147] Creat thread:6
+I0916 18:08:29.834375 27430 q_recommend.cc:147] Creat thread:7
+I0916 18:08:29.834388 27430 q_recommend.cc:147] Creat thread:8
+I0916 18:08:29.834403 27430 q_recommend.cc:147] Creat thread:9
+I0916 18:08:29.834416 27430 q_recommend.cc:147] Creat thread:10
+I0916 18:08:29.834429 27430 q_recommend.cc:147] Creat thread:11
+I0916 18:08:29.834442 27430 q_recommend.cc:147] Creat thread:12
+I0916 18:08:29.834455 27430 q_recommend.cc:147] Creat thread:13
+I0916 18:08:29.834470 27430 q_recommend.cc:147] Creat thread:14
+I0916 18:08:29.834484 27430 q_recommend.cc:147] Creat thread:15
+I0916 18:08:29.834497 27430 q_recommend.cc:147] Creat thread:16
+I0916 18:08:29.834512 27430 q_recommend.cc:147] Creat thread:17
+I0916 18:08:29.834527 27430 q_recommend.cc:147] Creat thread:18
+I0916 18:08:29.834539 27430 q_recommend.cc:147] Creat thread:19
