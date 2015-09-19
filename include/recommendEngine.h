@@ -16,7 +16,7 @@
 #include "normalize.h"
 #include "time.h"
 #include "math.h"
-
+/*
 typedef pair<std::string,float> PAIR;
 struct DATA_TYPE
 {
@@ -40,7 +40,7 @@ struct biggerthan
         return lhs.second > rhs.second;
     }
 };
-
+*/
 class recommendEngine
 {
 	public:
@@ -49,19 +49,13 @@ class recommendEngine
 
 	public:
 			void getCandicate(const std::string& userQuery
-					,Terms2QidMap& terms2qIDs
-					,QueryIdataMap& queryIdata
-					,QueryCateMap& query2Cate
-					,QueryCateMap& rsKeywords
-					,String2IntMap& termsIdMap); //get candicate
+					,queryProperty& qProperty
+					,StrToIntMap& termsIdMap); //get candicate
 
-			void recommendNoResults(Terms2QidMap& terms2qIDs
-					,QueryIdataMap& queryIdata
-			        ,QueryCateMap& query2Cate
-					,QueryCateMap& rsKeywords
+			void recommendNoResults(std::string inputQuery
+					,queryProperty& qProperty
 					,Json::Value& jsonResult
-					,String2IntMap& termsIdMap
-					,std::string inputQuery); //
+					,StrToIntMap& termsIdMap); //
 
 			void recommendCorrection();
 

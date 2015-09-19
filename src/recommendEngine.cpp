@@ -59,34 +59,27 @@ recommendEngine::~recommendEngine()
 }
 
 void recommendEngine::getCandicate(const std::string& userQuery
-					,Terms2QidMap& terms2qIDs
-					,QueryIdataMap& queryIdata
-					,QueryCateMap& query2Cate
-					,QueryCateMap& rsKeywords
-					,String2IntMap& termsIdMap)
+					,queryProperty& qProperty
+					,StrToIntMap& termsIdMap)
 {
 	//buildEngine();
 //	if(0 == userQuery.length())
 //		return;
-   termsIdMap = indexer_->search(userQuery,terms2qIDs
-		   ,queryIdata,query2Cate,rsKeywords);
+   termsIdMap = indexer_->search(userQuery,qProperty);
 }
 
 //no results recommendation
-void recommendEngine::recommendNoResults(Terms2QidMap& terms2qIDs,
-		QueryIdataMap& queryIdata
-        ,QueryCateMap& query2Cate
-		,QueryCateMap& rsKeywords
+void recommendEngine::recommendNoResults(std::string inputQuery
+		,queryProperty& qProperty
 		,Json::Value& jsonResult
-        ,String2IntMap& termsIdMap
-		,std::string inputQuery)
+        ,StrToIntMap& termsIdMap)
 {
 	//no candicate or no terms
 //	if(0 == terms2qIDs.size() || 0 == queryIdata.size() || 0 == termsIdMap.size())
 //		return;
 	vector<std::size_t> qTermsID;
 	vector<std::size_t> termsID;
-	String2IntMapIter termsIter;
+	StrToIntMapIter termsIter;
 	vector<DATA_TYPE> queryScoreVector;
     vector<DATA_TYPE> vec;
 
@@ -96,7 +89,7 @@ void recommendEngine::recommendNoResults(Terms2QidMap& terms2qIDs,
 	queryScoreVector.clear();
 
 	//find biggest score
-	Terms2QidMapIter termsIdIter;
+	IdToQListIter termsIdIter;
 
 	bool subset = false;
 	float bigScore1 = 0.0;
@@ -119,18 +112,18 @@ void recommendEngine::recommendNoResults(Terms2QidMap& terms2qIDs,
 		termsID.push_back(termsIter->second);
 	}
 
-	for(termsIdIter = terms2qIDs.begin(); termsIdIter != terms2qIDs.end(); ++termsIdIter)
+	for(termsIdIter = qProperty.cqIdList.begin(); termsIdIter != qProperty.cqIdList.end(); ++termsIdIter)
 	{
 		for(std::size_t i = 0; i < termsIdIter->second.size(); ++i)
 		{
-            dt.txt = queryIdata[termsIdIter->second[i]].text;
+            dt.txt = qProperty.cQuery[termsIdIter->second[i]].text;
             if(dt.txt.size() > 30)
                 continue;
             //LOG(INFO) << "candicate query length:" << queryText.size();
-			qTermsID = queryIdata[termsIdIter->second[i]].tid;
+			qTermsID = qProperty.cQuery[termsIdIter->second[i]].tid;
 			//caculateNM(termsID,qTermsID,cnt);
-			float weight = (float) queryIdata[termsIdIter->second[i]].counts / (
-			queryIdata[termsIdIter->second[i]].hits + (float)0.3*queryIdata[termsIdIter->second[i]].counts);
+			float weight = (float) qProperty.cQuery[termsIdIter->second[i]].counts               / (	qProperty.cQuery[termsIdIter->second[i]].hits + 
+					(float)0.3*qProperty.cQuery[termsIdIter->second[i]].counts);
 			if(Is_subset(termsID,qTermsID))
 			{
 				subset = true;
@@ -151,17 +144,17 @@ void recommendEngine::recommendNoResults(Terms2QidMap& terms2qIDs,
 				if(bigScore2 < tscore)
 				{
 					bigScore2 = tscore;
-					res2 = queryIdata[termsIdIter->second[i]].text; //get query 
+					res2 = qProperty.cQuery[termsIdIter->second[i]].text; //get query 
 				}
 			}
-			if(rsKeywords.size() == 0)
+			if(qProperty.rsKeywords.size() == 0)
 			{
 			//find related
 			if(inputQuery.size() < 31 )
             {
 			caculateNM(termsID,qTermsID,cnt);
             float simScore = (float) cnt / (qTermsID.size() + 0.1);
-            float wScore = (float)log(queryIdata[termsIdIter->second[i]].hits 
+            float wScore = (float)log(qProperty.cQuery[termsIdIter->second[i]].hits 
 					+ 2.0) / (qTermsID.size() + 0.1);
             dt.score = (float) wScore * simScore;
             sortByScore(queryScoreVector,dt);
@@ -196,11 +189,11 @@ void recommendEngine::recommendNoResults(Terms2QidMap& terms2qIDs,
 	std::size_t Topk = 9;
 	std::size_t upperbound;
 	Json::Value recommend;
-	if(rsKeywords.size() != 0)
+	if(qProperty.rsKeywords.size() != 0)
 	{
-		QueryCateMapIter rsIter;
+		IntToStrListIter rsIter;
 		queryScoreVector.clear();
-		for(rsIter = rsKeywords.begin(); rsIter != rsKeywords.end(); ++rsIter)
+		for(rsIter = qProperty.rsKeywords.begin(); rsIter != qProperty.rsKeywords.end(); ++rsIter)
 			for(int i = 0; i < rsIter->second.size();++i)
 			recommend.append(rsIter->second[i]);
 	}
@@ -360,6 +353,8 @@ void recommendEngine::jsonResults(const std::string& userQuery,std::string& res)
 	Json::Value catJson;
 	Json::Value category;
 
+	queryProperty qProperty;
+
     Terms2QidMap terms2qIDs;
     QueryIdataMap queryIdata;
     QueryCateMap query2Cate;
@@ -381,14 +376,13 @@ void recommendEngine::jsonResults(const std::string& userQuery,std::string& res)
     boost::posix_time::millisec_posix_time_system_config::time_duration_type time_elapse;
 
     time_start = boost::posix_time::microsec_clock::universal_time();
-	getCandicate(userQuery,terms2qIDs,queryIdata,query2Cate,rsKeywords,termsIdMap);
+	getCandicate(userQuery,qProperty,termsIdMap);
     time_end = boost::posix_time::microsec_clock::universal_time();
     time_elapse = time_end - time_start;
     int cost_time1 = time_elapse.ticks();
 
     time_start = boost::posix_time::microsec_clock::universal_time();
-	recommendNoResults(terms2qIDs,queryIdata,query2Cate,rsKeywords
-			,jsonResult,termsIdMap,userQuery);
+	recommendNoResults(userQuery,qProperty,jsonResult,termsIdMap);
     time_end = boost::posix_time::microsec_clock::universal_time();
     time_elapse = time_end - time_start;
     int cost_time2 = time_elapse.ticks();
@@ -407,7 +401,7 @@ void recommendEngine::jsonResults(const std::string& userQuery,std::string& res)
     vector<string> cate;
 
 	QueryCateMapIter cateIter;
-	for(cateIter = query2Cate.begin();cateIter != query2Cate.end(); ++cateIter)
+	for(cateIter = qProperty.cCategory.begin();cateIter != qProperty.cCategory.end(); ++cateIter)
     {
         category.clear();
         for(std::size_t i = 0; i < cateIter->second.size();++i)

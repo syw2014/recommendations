@@ -1,4 +1,0 @@
-Log file created at: 2015/09/16 18:18:58
-Running on machine: lscm
-Log line format: [IWEF]mmdd hh:mm:ss.uuuuuu threadid file:line] msg
-E0916 18:18:58.547492 27576 recommendEngine.cpp:39] No original query sources directory!

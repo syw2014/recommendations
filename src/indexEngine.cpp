@@ -320,24 +320,22 @@ void indexEngine::insert(QueryData& userQuery)
 
 //get candicate query id,category
 String2IntMap indexEngine::search(const std::string& userQuery
-		,Terms2QidMap& candicateQid
-		,QueryIdataMap& candicateQuery
-		,QueryCateMap& candicateCate
-		,QueryCateMap& rsKeywords)
+		,queryProperty& qProperty)
 {
 	std::string nstr = userQuery;
 	if(0 != userQuery.length())
 	{
 		Normalize::normalize(nstr);
-		candicateQid.clear();
-		candicateQuery.clear();
-        candicateCate.clear();
+		qProperty.cqIdList.clear();
+		qProperty.cQuery.clear();
+		qProperty.cCategory.clear();
+		qProperty.rsKeywords.clear();
 
-		String2IntMap termsMap;
-		String2IntMapIter termsMapIter;
+		StrToIntMap termsMap;
+		StrToIntMapIter termsMapIter;
 
 		tokenTerms(nstr,termsMap);
-		Terms2QidMapIter termsQidIter;
+		IdToQListIter termsQidIter;
 
 	//get candicate query id
 	for(termsMapIter = termsMap.begin(); termsMapIter != termsMap.end(); ++termsMapIter)
@@ -345,13 +343,13 @@ String2IntMap indexEngine::search(const std::string& userQuery
 		termsQidIter = terms2qIDs_.find(termsMapIter->second);
 		if(terms2qIDs_.end() != termsQidIter)
 		{
-			candicateQid.insert(make_pair(termsMapIter->second,termsQidIter->second));
+			qProperty.cqIdList.insert(make_pair(termsMapIter->second,termsQidIter->second));
 		}
 	}
 
-	QueryIdataIter queryIter; 
+	IdToQueryIter queryIter; 
 	//get candicate query data
-	for(termsQidIter = candicateQid.begin(); termsQidIter != candicateQid.end(); ++termsQidIter)
+	for(termsQidIter = qProperty.cqIdList.begin(); termsQidIter != qProperty.cqIdList.end(); ++termsQidIter)
 	{
 		for(std::size_t i = 0; i < termsQidIter->second.size(); ++i)
 		{
@@ -360,11 +358,11 @@ String2IntMap indexEngine::search(const std::string& userQuery
             {
                 if(queryIter->second.text.size() > 30)
                     continue;
-				candicateQuery.insert(make_pair(termsQidIter->second[i],queryIter->second));
+				qProperty.cQuery.insert(make_pair(termsQidIter->second[i],queryIter->second));
             }
 		}
 	}
-	GetProperty(userQuery,candicateCate,rsKeywords);
+	GetProperty(userQuery,qProperty.cCategory,qProperty.rsKeywords);
 //	std::cout << "termsmap.size" << termsMap.size() << "\tcandicateqid.size()" 
 //		<< candicateQid.size() <<"\tcandicate query.size()" 
 //		<< candicateQuery.size()<< std::endl;
@@ -380,9 +378,9 @@ String2IntMap indexEngine::search(const std::string& userQuery
     }*/
 	return termsMap;
 	}
-	LOG(INFO) << "User query terms num:" << candicateQid.size() 
-		<< "\tCandicate query num:" << candicateQuery.size() 
-		<< "\tCandicate category num:" << candicateCate.size();
+	LOG(INFO) << "User query terms num:" << qProperty.cqIdList.size() 
+		<< "\tCandicate query num:" << qProperty.cQuery.size() 
+		<< "\tCandicate category num:" << qProperty.cCategory.size();
 }
 
 //insert taobao rskeywords
@@ -411,17 +409,17 @@ void indexEngine::InsertRsKeywords(std::string& key,vector<std::string>& rskeywo
 }
 
 void indexEngine::GetProperty(const std::string& userQuery
-		,QueryCateMap& candicateCate
-		,QueryCateMap& rsKeywords)
+		,IntToStrList& candidateCate
+		,IntToStrList& rsKeywords)
 {
 	std::string uquery = userQuery;
 	Normalize::normalize(uquery);
 	std::size_t hsQuery = hash_query(uquery);
-	QueryCateMapIter cateIter;
-	QueryCateMapIter rsKeyIter;
+	IntToStrListIter cateIter;
+	IntToStrListIter rsKeyIter;
 	cateIter = query2Cate_.find(hsQuery);
 	if(query2Cate_.end() != cateIter)
-		candicateCate.insert(make_pair(hsQuery,cateIter->second));
+		candidateCate.insert(make_pair(hsQuery,cateIter->second));
 	//std::cout << "hash value:" << hsQuery << std::endl;
 	rsKeyIter = rsKeyTaoBao_.find(hsQuery);
 	if(rsKeyTaoBao_.end() != rsKeyIter)
@@ -471,16 +469,16 @@ void indexEngine::indexing(const std::string& corpus_pth)
 		qDat.counts = atoi(splitDat[3].c_str());//results numbers
 
 		//get term id
-		String2IntMap termsVector;
+		StrToIntMap termsVector;
 		tokenTerms(qDat.text,termsVector);
 		
 		std::size_t queryID = izenelib::util::izene_hashing(qDat.text);
 		vector<std::size_t> queryIdVector;
 		vector<std::size_t> termsIdVector;
 		
-		Terms2QidMapIter termsQueryIter;
+		IdToQListIter termsQueryIter;
 		queryIdVector.push_back(queryID);
-		String2IntMapIter termsIter;
+		StrToIntMapIter termsIter;
 		//assign hash id for every terms
 		for(termsIter = termsVector.begin(); termsIter != termsVector.end(); ++termsIter)
 		{
@@ -567,7 +565,7 @@ void indexEngine::flush()
 		LOG(ERROR) << "Open queryDat dictionary error!";
 
 	//flush query data to disk,queryDat.v
-	boost::unordered_map<std::size_t,QueryData>::iterator queryIter;
+	IdToQueryIter queryIter;
 	for(queryIter = queryIdata_.begin(); queryIter != queryIdata_.end(); ++queryIter)
 	{
 		ofQueryDat << queryIter->first << "\t" << queryIter->second.text << "\t"
@@ -580,7 +578,7 @@ void indexEngine::flush()
 	}
 
 	//flush terms id,candicate query id to disk,termsId.v
-	boost::unordered_map<std::size_t,vector<std::size_t> >::iterator termsQueryIter;
+	IdToQListIter termsQueryIter;
 	for(termsQueryIter = terms2qIDs_.begin(); termsQueryIter != terms2qIDs_.end(); ++termsQueryIter)
 	{
 		//std::cout << "Terms:" << termsQueryIter->first << std::endl;
@@ -611,7 +609,7 @@ bool indexEngine::isUpdate()
 }
 
 //return terms and it's hash value
-void indexEngine::tokenTerms(const std::string& userQuery,String2IntMap& termsMap)
+void indexEngine::tokenTerms(const std::string& userQuery,StrToIntMap& termsMap)
 {
 	if(0 == userQuery.length())
 		return;
@@ -627,7 +625,7 @@ void indexEngine::tokenTerms(const std::string& userQuery,String2IntMap& termsMa
 	}
 
 	//dedup
-	String2IntMapIter termsMapIter;
+	StrToIntMapIter termsMapIter;
 	for(std::size_t i = 0; i < segTerms.size(); ++i)
 	{
 		termsMapIter = termsMap.find(segTerms[i].first);

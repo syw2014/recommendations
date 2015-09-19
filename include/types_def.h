@@ -38,7 +38,7 @@ struct biggerthan
 
 struct cmpByValue
 {
-	bool operator()(const DATA_TYPE& lhs,DATA_TYPE& rhs)
+	bool operator()(const DATA_TYPE& lhs,const DATA_TYPE& rhs)
 	{
 		return lhs.score > rhs.score;
 	}
@@ -53,14 +53,21 @@ typedef boost::unordered_map<std::size_t,vector<std::size_t> > IdToQList;
 typedef boost::unordered_map<std::size_t,vector<std::size_t> >::iterator IdToQListIter;
 
 /**id to query content**/
-typedef boost::unordered_map<std::size_t,QueryData> IntToStruct;
-typedef boost::unordered_map<std::size_t,QueryData>::IntToStructIter;
+typedef boost::unordered_map<std::size_t,QueryData> IdToQuery;
+typedef boost::unordered_map<std::size_t,QueryData>::iterator IdToQueryIter;
 
 /****/
 typedef boost::unordered_map<std::size_t,vector<std::string> > IntToStrList;
-typedef boost::unordered_map<std::size_t,vector<std::string> >::IntToStrListIter;
+typedef boost::unordered_map<std::size_t,vector<std::string> >::iterator IntToStrListIter;
 
 
+struct queryProperty
+{
+	IdToQList cqIdList; //  terms id -> candidate query id list
+	IdToQuery cQuery;   // candidate query id -> query content
+	IntToStrList cCategory;    // candidate query id -> category
+	IntToStrList rsKeywords;  // candidate query id -> related keywords of Taobao
+};
 
 
 

@@ -8,24 +8,7 @@
 #ifndef INDEXENGINE_H
 #define INDEXENGINE_H
 
-#include <iostream>
-#include <vector>
-#include <string>
-#include <fstream>
-
-#include <boost/unordered_map.hpp>
-#include <boost/filesystem.hpp>
-#include <boost/lexical_cast.hpp>
-#include <boost/algorithm/string.hpp>
-#include <boost/functional/hash.hpp>
-#include <boost/date_time/posix_time/posix_time.hpp>
-
-#include <util/hashFunction.h>
-#include <glog/logging.h>
-#include <ctype.h>
-#include "knlp/horse_tokenize.h"
-#include "normalize.h"
-
+#include "types_def.h"
 
 //using in tokenize ,and assign hash value for terms
 typedef boost::unordered_map<std::string,std::size_t> String2IntMap;
@@ -36,14 +19,14 @@ typedef boost::unordered_map<std::size_t,vector<std::size_t> > Terms2QidMap;
 typedef boost::unordered_map<std::size_t,vector<std::size_t> >::iterator Terms2QidMapIter;
 //structure in corpus
 //query text \t hits \t count \t terms id
-struct QueryData
+/*struct QueryData
 {
 	std::string text; //qurey text
 	std::size_t hits; //searching times
 	std::size_t counts; //searching results
 	
 	vector<std::size_t> tid; //terms hash value
-};
+};*/
 
 typedef boost::unordered_map<std::size_t,QueryData> QueryIdataMap;
 typedef boost::unordered_map<std::size_t,QueryData>::iterator QueryIdataIter;
@@ -62,21 +45,18 @@ class indexEngine
 	public:
 		void clear();
 		void insert(QueryData& userQuery); //insert an userQuery
-		String2IntMap search(const std::string& userQuery,
-				Terms2QidMap& candicateQids
-				,QueryIdataMap& candicateQuery
-				,QueryCateMap& candicateCate
-				,QueryCateMap& rsKeywords);//search query
+		String2IntMap search(const std::string& userQuery
+						,queryProperty& queryProperty);//search query
 	
 		//get property like category,attribute,rskeywords form TaoBao
 		void GetProperty(const std::string& userQuery
-				,QueryCateMap& candicateCate
-				,QueryCateMap& rsKeywords);
+				,IntToStrList& candidateCate
+				,IntToStrList& rsKeywords);
 
 		void InsertRsKeywords(std::string& key,vector<std::string>& rskeywords);
 
 		void indexing(const std::string& corpus_pth);
-		void tokenTerms(const std::string&, String2IntMap&);
+		void tokenTerms(const std::string&, StrToIntMap&);
 		void flush();
 		bool open(); //open disk file
 		bool isUpdate();
@@ -84,11 +64,11 @@ class indexEngine
 
 
 	private:
-		Terms2QidMap terms2qIDs_; //terms id ,and it's query id vector
-		QueryIdataMap queryIdata_; //query id ,query data
-        QueryCateMap query2Cate_;   //query --> category
+		IdToQList terms2qIDs_; //terms id ,and it's query id vector
+		IdToQuery queryIdata_; //query id ,query data
+        IntToStrList query2Cate_;   //query --> category
 		std::set<std::string> forbidList_; // forbid keywords list
-		QueryCateMap rsKeyTaoBao_;
+		IntToStrList rsKeyTaoBao_;
 
 		std::string dir_; //tokenize dictionary path
 		std::string dict_pth_;
