@@ -9,7 +9,7 @@
 #define INDEXENGINE_H
 
 #include "types_def.h"
-
+/*
 //using in tokenize ,and assign hash value for terms
 typedef boost::unordered_map<std::string,std::size_t> String2IntMap;
 typedef boost::unordered_map<std::string,std::size_t>::iterator String2IntMapIter;
@@ -19,21 +19,21 @@ typedef boost::unordered_map<std::size_t,vector<std::size_t> > Terms2QidMap;
 typedef boost::unordered_map<std::size_t,vector<std::size_t> >::iterator Terms2QidMapIter;
 //structure in corpus
 //query text \t hits \t count \t terms id
-/*struct QueryData
+struct QueryData
 {
 	std::string text; //qurey text
 	std::size_t hits; //searching times
 	std::size_t counts; //searching results
 	
 	vector<std::size_t> tid; //terms hash value
-};*/
+};/
 
 typedef boost::unordered_map<std::size_t,QueryData> QueryIdataMap;
 typedef boost::unordered_map<std::size_t,QueryData>::iterator QueryIdataIter;
 
 typedef boost::unordered_map<std::size_t,vector<std::string> > QueryCateMap;
 typedef boost::unordered_map<std::size_t,vector<std::string> >::iterator QueryCateMapIter;
-
+*/
 class indexEngine
 {
 
@@ -45,7 +45,7 @@ class indexEngine
 	public:
 		void clear();
 		void insert(QueryData& userQuery); //insert an userQuery
-		String2IntMap search(const std::string& userQuery
+		StrToIntMap search(const std::string& userQuery
 						,queryProperty& queryProperty);//search query
 	
 		//get property like category,attribute,rskeywords form TaoBao

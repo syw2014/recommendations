@@ -59,12 +59,10 @@ class recommendEngine
 
 			void recommendCorrection();
 
-			void recommend(Terms2QidMap& terms2qIDs
-					,QueryIdataMap& queryIdata
-					,QueryCateMap& query2Cate
+			void recommend(std::string inputQuery
+					,queryProperty& qProperty
 					,Json::Value& jsonResult
-					,String2IntMap& termsIdMap
-					,std::string inputQuery
+					,StrToIntMap& termsIdMap
 					,const std::size_t TopK = 9);
 
 			void InsertRsKeywords(std::string& KeyAndRskey);

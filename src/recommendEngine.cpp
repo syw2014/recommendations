@@ -251,11 +251,11 @@ void recommendEngine::recommendCorrection()
 }
 
 //related query recommendation
-void recommendEngine::recommend(Terms2QidMap& terms2qIDs,QueryIdataMap& queryIdata
-            ,QueryCateMap& query2Cate
+void recommendEngine::recommend(std::string inputQuery
+            ,queryProperty& qProperty
 			,Json::Value& jsonResult
-			,String2IntMap& termsIdMap
-            ,std::string inputQuery,const std::size_t TopK)
+			,StrToIntMap& termsIdMap
+            ,const std::size_t TopK)
 {
 	//check
 	//if(0 == terms2qIDs.size() || 0 == queryIdata.size() || 0 == termsIdMap.size())
@@ -270,8 +270,8 @@ void recommendEngine::recommend(Terms2QidMap& terms2qIDs,QueryIdataMap& queryIda
 	termsID.clear();
 	queryScoreMap.clear();
 
-	Terms2QidMapIter termsIdIter;
-	String2IntMapIter termsIter;
+	IdToQListIter termsIdIter;
+	StrToIntMapIter termsIter;
 	float queryScore = 0.0;
 	std::size_t cnt = 0;
 	std::string queryText = "";
@@ -284,18 +284,18 @@ void recommendEngine::recommend(Terms2QidMap& terms2qIDs,QueryIdataMap& queryIda
 	float weight = 0.0;
 	float similar = 0.0;
 	//caculate score
-	for(termsIdIter = terms2qIDs.begin(); termsIdIter != terms2qIDs.end(); ++termsIdIter)
+	for(termsIdIter = qProperty.cqIdList.begin(); termsIdIter != qProperty.cqIdList.end(); ++termsIdIter)
 	{
 		for(std::size_t j = 0; j < termsIdIter->second.size(); ++j)
 		{
-			dt.txt = queryIdata[termsIdIter->second[j]].text;
+			dt.txt = qProperty.cQuery[termsIdIter->second[j]].text;
 			if(dt.txt.size() > 45)
 			    continue;
-			qTermsID = queryIdata[termsIdIter->second[j]].tid;
+			qTermsID = qProperty.cQuery[termsIdIter->second[j]].tid;
 			caculateNM(termsID,qTermsID,cnt);
 
 			similar = (float) cnt / (qTermsID.size() + 0.1) ;
-			weight = (float)log(queryIdata[termsIdIter->second[j]].hits + 2.0)/(qTermsID.size() +0.1);
+			weight = (float)log(qProperty.cQuery[termsIdIter->second[j]].hits + 2.0)/(qTermsID.size() +0.1);
 			dt.score = (float) weight * similar;
             sortByScore(queryScoreMap,dt);
 		}
@@ -354,12 +354,7 @@ void recommendEngine::jsonResults(const std::string& userQuery,std::string& res)
 	Json::Value category;
 
 	queryProperty qProperty;
-
-    Terms2QidMap terms2qIDs;
-    QueryIdataMap queryIdata;
-    QueryCateMap query2Cate;
-	QueryCateMap rsKeywords;
-    String2IntMap termsIdMap;
+	StrToIntMap termsIdMap;
 
     if(indexer_->isForbidden(userQuery))
 	{
@@ -400,7 +395,7 @@ void recommendEngine::jsonResults(const std::string& userQuery,std::string& res)
     Json::Value category;
     vector<string> cate;
 
-	QueryCateMapIter cateIter;
+	IntToStrListIter cateIter;
 	for(cateIter = qProperty.cCategory.begin();cateIter != qProperty.cCategory.end(); ++cateIter)
     {
         category.clear();

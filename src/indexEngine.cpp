@@ -290,12 +290,12 @@ void indexEngine::insert(QueryData& userQuery)
 	//generated terms id
 	if(1 > userQuery.tid.size())
 	{
-		String2IntMap termsMap;
-		String2IntMapIter termsMapIter;
+		StrToIntMap termsMap;
+		StrToIntMapIter termsMapIter;
 		vector<std::size_t> termsIdVector;
 		vector<std::size_t> queryIdVector;
 
-		Terms2QidMapIter termsIdIter;
+		IdToQListIter termsIdIter;
 
 		tokenTerms(userQuery.text,termsMap);
 		for(termsMapIter = termsMap.begin(); termsMapIter != termsMap.end(); ++termsMapIter)
@@ -319,7 +319,7 @@ void indexEngine::insert(QueryData& userQuery)
 }
 
 //get candicate query id,category
-String2IntMap indexEngine::search(const std::string& userQuery
+StrToIntMap indexEngine::search(const std::string& userQuery
 		,queryProperty& qProperty)
 {
 	std::string nstr = userQuery;
@@ -387,7 +387,7 @@ String2IntMap indexEngine::search(const std::string& userQuery
 void indexEngine::InsertRsKeywords(std::string& key,vector<std::string>& rskeywords)
 {
 	std::size_t hsId = hash_query(key);
-	QueryCateMapIter it;
+	IntToStrListIter it;
 	it = rsKeyTaoBao_.find(hsId);
 	if(it == rsKeyTaoBao_.end())
 	{
