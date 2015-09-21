@@ -194,7 +194,7 @@ void recommendEngine::recommendNoResults(std::string inputQuery
 		IntToStrListIter rsIter;
 		queryScoreVector.clear();
 		for(rsIter = qProperty.rsKeywords.begin(); rsIter != qProperty.rsKeywords.end(); ++rsIter)
-			for(int i = 0; i < rsIter->second.size();++i)
+			for(std::size_t i = 0; i < rsIter->second.size();++i)
 			recommend.append(rsIter->second[i]);
 	}
 	else
@@ -272,7 +272,7 @@ void recommendEngine::recommend(std::string inputQuery
 
 	IdToQListIter termsIdIter;
 	StrToIntMapIter termsIter;
-	float queryScore = 0.0;
+	//float queryScore = 0.0;
 	std::size_t cnt = 0;
 	std::string queryText = "";
     DATA_TYPE dt;

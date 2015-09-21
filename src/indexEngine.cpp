@@ -606,6 +606,7 @@ void indexEngine::clear()
 
 bool indexEngine::isUpdate()
 {
+	return false;
 }
 
 //return terms and it's hash value

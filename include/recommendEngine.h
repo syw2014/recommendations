@@ -11,36 +11,11 @@
 #include <iostream>
 #include <map>
 
-#include "json/json.h"
 #include "indexEngine.h"
 #include "normalize.h"
 #include "time.h"
 #include "math.h"
-/*
-typedef pair<std::string,float> PAIR;
-struct DATA_TYPE
-{
-    float score;
-    std::string txt;
-};
 
-// sort  ascending
-struct cmpByValue
-{
-	bool operator()(const DATA_TYPE& lhs, const DATA_TYPE& rhs)
-	{
-		return lhs.score > rhs.score;
-	}
-};
-
-struct biggerthan
-{
-    bool operator()(const PAIR& lhs, const PAIR& rhs)
-    {
-        return lhs.second > rhs.second;
-    }
-};
-*/
 class recommendEngine
 {
 	public:
